@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - SAMMY WORX PRINTS AND DESIGN</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        .hero-small {
+            /* Using a subtle dark gradient over the image matching the primary color */
+            background: linear-gradient(135deg, rgba(10, 25, 47, 0.9), rgba(17, 34, 64, 0.8)), url('images/about-hero-bg.jpg') no-repeat center center/cover;
+            color: white;
+            padding: 150px 0 80px;
+            /* Increased padding to push content down from fixed header */
+            text-align: center;
+            margin-bottom: 0;
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        .hero-small h1 {
+            font-size: 3.5em;
+            color: white;
+            font-weight: 700;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-small p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 10px;
+        }
+
+        .section-intro {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Content Blocks (Mission/Commitment) */
+        .content-block {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            text-align: left;
+            margin-bottom: 80px;
+            padding: 40px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            /* Softened shadow */
+        }
+
+        .content-block:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .content-block img {
+            max-width: 40%;
+            flex-shrink: 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border: 4px solid var(--accent-color);
+            /* Added Gold border */
+            transition: transform 0.3s ease;
+        }
+
+        .content-block img:hover {
+            transform: scale(1.02);
+        }
+
+        .content-block div {
+            flex-grow: 1;
+        }
+
+        .content-block h3 {
+            color: var(--primary-color);
+            font-size: 1.8em;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .content-block ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 20px;
+        }
+
+        .content-block ul li {
+            padding: 8px 0;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 15px;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .content-block ul li strong {
+            color: var(--primary-color);
+        }
+
+        /* Team Section Grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            /* Adjusted width */
+            gap: 40px;
+            /* Increased spacing */
+            margin-top: 50px;
+        }
+
+        .team-member {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            /* More rounded corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.4s ease;
+            border-bottom: 4px solid transparent;
+        }
+
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-bottom: 4px solid var(--accent-color);
+            /* Highlight on hover */
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid var(--accent-color);
+            /* Thicker Gold ring */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member h4 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        .team-member p:nth-of-type(1) {
+            font-size: 1.1em;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .team-member p:nth-of-type(2) {
+            font-size: 0.95em;
+            color: var(--text-color);
+        }
+
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 992px) {
+            .hero-small h1 {
+                font-size: 2.5em;
+            }
+
+            .content-block,
+            .content-block:nth-child(even) {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
+
+            .content-block img {
+                max-width: 100%;
+            }
+
+            .content-block h3 {
+                border-bottom: 3px solid var(--accent-color);
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .content-block ul {
+                text-align: left;
+                padding-left: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-small {
+                padding: 120px 0 60px;
+            }
+
+            .hero-small h1 {
+                font-size: 2em;
+            }
+
+            .team-member {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/logo.jpeg" alt="Sammy Worx Logo">
+                SAMMY WORX <span>PRINTS & DESIGN</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" class="active">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-small">
+            <div class="container animate-on-scroll">
+                <h1>About Sammy Worx Prints & Design</h1>
+                <p>Discover our journey, values, and the team behind "Best in the game."</p>
+            </div>
+        </section>
+
+        <section class="py-5">
+            <div class="container section-intro animate-on-scroll">
+                <h2>Our Story and Vision</h2>
+                <p>Sammy Worx Prints and Design was founded with a simple yet powerful vision: to provide exceptional
+                    printing and design services that empower businesses and individuals to express their unique
+                    identities. Since our inception, we've grown from a humble workshop to a leading provider, driven by
+                    innovation and a relentless pursuit of perfection.</p>
+            </div>
+
+            <div class="container">
+                <div class="content-block animate-on-scroll">
+                    <img src="images/logo.jpeg" alt="Our Vision">
+                    <div>
+                        <h3>Our Mission</h3>
+                        <p>To deliver creative, high-quality, and cost-effective printing and design solutions that
+                            exceed client expectations. We aim to be the most reliable and innovative partner in
+                            bringing visual ideas to life, ensuring every project reflects our commitment to being "Best
+                            in the game."</p>
+                        <h3>Our Values</h3>
+                        <ul>
+                            <li><strong>Quality:</strong> Uncompromising standards in every print and design.</li>
+                            <li><strong>Creativity:</strong> Fostering innovative ideas and unique solutions.</li>
+                            <li><strong>Integrity:</strong> Building trust through honest and transparent practices.
+                            </li>
+                            <li><strong>Customer Focus:</strong> Prioritizing client satisfaction and long-term
+                                relationships.</li>
+                            <li><strong>Innovation:</strong> Constantly evolving with new technologies and trends.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="content-block animate-on-scroll">
+                    <img src="images/23.jpeg" alt="Our Commitment to Quality">
+                    <div>
+                        <h3>Our Commitment to You</h3>
+                        <p>At Sammy Worx Prints & Design, your project is our priority. We understand the importance of
+                            your brand and
+                            message, and we are committed to delivering results that make an impact. Our skilled team
+                            uses cutting-edge technology and premium materials to ensure every product stands out.</p>
+                        <p>Thanks to Herona Hospital - Kisoga. We believe in strong relationships and clear
+                            communication, working closely with you from
+                            initial concept to final delivery. Choose Sammy Worx for a partner who truly cares about
+                            your success. </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5 bg-light-bg">
+            <div class="container animate-on-scroll">
+                <hr style="background-color: rgb(255, 181, 44);height: 0.1rem;">
+                <h2 style="text-align: center;">Meet Our Team</h2>
+                <hr style="background-color: rgb(253, 180, 42);height: 0.1rem;">
+                <p>Our dedicated professionals who make "Best in the game" possible.</p>
+                <div class="team-grid">
+                    <div class="team-member animate-on-scroll">
+                        <img src="images/sammysuite.png" alt="C.E.O">
+                        <h4>SAMUEL TENDO (Sammy)</h4>
+                        <p>Founder & Lead Designer</p>
+                        <p>With over 15 years in graphic design, Sammy leads our creative vision.<br><strong>(256) 708
+                                201 655</strong></p>
+                    </div>
+                    <div class="team-member animate-on-scroll">
+                        <img src="images/brenda.png" alt="Team Member Name">
+                        <h4>BRENDA WORX</h4>
+                        <p>Customer Relations</p>
+                        <p>Brenda is your first point of contact, ensuring a smooth customer journey.<br><strong>(256)
+                                750 149 688</strong></p>
+                    </div>
+                    <div class="team-member animate-on-scroll">
+                        <img src="images/36.JPG" alt="Team Member Name">
+                        <h4>SEDRIC ANDREW NGOBI</h4>
+                        <p>Print Production Manager</p>
+                        <p>Andrew ensures every print job meets our rigorous quality standards.<br><strong>(256) 709 931
+                                467</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+
+            <div class="footer-logo-group footer-column">
+                <a href="index.html" class="footer-logo">SAMMY WORX PRINTS & DESIGN</a>
+                <p>"Best in the game"</p>
+            </div>
+
+            <div class="footer-nav footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="social-links footer-column">
+                <h3>Follow Us</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                </div>
+            </div>
+
+            <p class="mt-3">&copy; 2026 Sammy Worx Prints & Design. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="backToTopBtn" class="btn to-top-btn"
+        style="display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

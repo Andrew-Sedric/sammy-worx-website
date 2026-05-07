@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - SAMMY WORX PRINTS AND DESIGN</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* KEYFRAMES for subtle animations */
+        @keyframes imageHoverEffect {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.03);
+            }
+        }
+
+        /* Specific styles for the Services Page */
+
+        /* Hero Section */
+        .hero-small {
+            background: linear-gradient(135deg, rgba(10, 25, 47, 0.9), rgba(17, 34, 64, 0.8)), url('images/services-hero-bg.jpg') no-repeat center center/cover;
+            color: white;
+            padding: 150px 0 80px;
+            text-align: center;
+            margin-bottom: 0;
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        .hero-small h1 {
+            font-size: 3.5em;
+            color: white;
+            font-weight: 700;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-small p {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Service List Container */
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            /* Increased gap for clear separation */
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        /* Individual Service Item Styling (Card Look) */
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            padding: 50px;
+            /* Increased padding */
+            background-color: white;
+            border-radius: 15px;
+            /* More modern rounded corners */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            /* Stronger, defined shadow */
+            text-align: left;
+            border-left: 8px solid var(--primary-color);
+            /* Strong primary color indicator */
+            transition: all 0.5s ease;
+        }
+
+        .service-item:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+            border-left: 8px solid var(--accent-color);
+            /* Gold highlight on hover */
+            transform: translateY(-5px);
+            /* Subtle lift */
+        }
+
+        .service-item:nth-child(even) {
+            flex-direction: row-reverse;
+            background-color: var(--light-bg);
+            /* Use a light background variable */
+            border-left: none;
+            border-right: 8px solid var(--primary-color);
+        }
+
+        .service-item:nth-child(even):hover {
+            border-right: 8px solid var(--accent-color);
+        }
+
+        /* Service Image Styling */
+        .service-item img {
+            max-width: 450px;
+            width: 45%;
+            flex-shrink: 0;
+            object-fit: cover;
+            height: 300px;
+            /* Uniform height for better alignment */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .service-item img:hover {
+            animation: imageHoverEffect 0.6s forwards;
+            /* Apply subtle scaling on hover */
+        }
+
+        /* Service Text Content */
+        .service-item h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+            /* Only underline the text */
+        }
+
+        .service-item p {
+            line-height: 1.7;
+            color: var(--text-color);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            /* Responsive grid */
+            gap: 15px 25px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border: 1px dashed rgba(10, 25, 47, 0.2);
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+
+        .feature:hover {
+            color: var(--accent-color);
+        }
+
+        .feature i {
+            color: var(--accent-color);
+            font-size: 1.3em;
+            /* Added Subtle Rotation Animation */
+            transition: transform 0.5s ease;
+        }
+
+        .feature:hover i {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        /* Call to Action Section */
+        .call-to-action {
+            padding: 80px 0;
+            background-color: var(--primary-color);
+            color: white;
+            border-top: 1px solid var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            margin-top: 40px;
+        }
+
+        .call-to-action h2 {
+            font-size: 2.5em;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .call-to-action p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .call-to-action .btn {
+            padding: 15px 35px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 50px;
+            /* Pill shape for buttons in CTA */
+            background-color: var(--accent-color) !important;
+            color: var(--primary-color) !important;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .call-to-action .btn:hover {
+            background-color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+
+            .service-item,
+            .service-item:nth-child(even) {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+                padding: 40px;
+                border-left: 5px solid var(--primary-color);
+                /* Standard border on mobile */
+                border-right: none;
+            }
+
+            .service-item:nth-child(even):hover {
+                border-left: 5px solid var(--accent-color);
+                border-right: none;
+            }
+
+            .service-item img {
+                width: 100%;
+                max-width: 400px;
+                /* Constraint image size on small screens */
+            }
+
+            .service-item h3 {
+                border-bottom: 2px solid var(--accent-color);
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                text-align: left;
+            }
+
+            .feature {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/logo.jpeg" alt="Sammy Worx Logo">
+                SAMMY WORX <span>PRINTS & DESIGN</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html" class="active">Services</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-small">
+            <div class="container animate-on-scroll">
+                <h1>Our Core Services</h1>
+                <p>Delivering "Best in the game" quality across a spectrum of printing and design solutions.</p>
+            </div>
+        </section>
+
+        <section class="py-5">
+            <div class="container service-list">
+
+                <div class="service-item animate-on-scroll">
+                    <img src="images/N1.jpeg" alt="Graphic Design Services" class="img-fluid">
+                    <div>
+                        <h3>Graphic Design & Branding</h3>
+                        <p>Our expert designers translate your ideas into stunning, professional visuals. We handle
+                            everything from logo creation and full brand identity kits to marketing materials design.
+                        </p>
+                        <p><strong>Key Design Services:</strong></p>
+                        <div class="features-grid">
+                            <span class="feature"><i class="fas fa-magic"></i> Logo & Corporate Identity</span>
+                            <span class="feature"><i class="fas fa-palette"></i> Brochure & Flyer Design</span>
+                            <span class="feature"><i class="fas fa-share-alt"></i> Social Media Graphics</span>
+                            <span class="feature"><i class="fas fa-box"></i> Packaging Design</span>
+                        </div>
+                        <a href="contact.html?service=design" class="btn mt-4">Start Your Design</a>
+                    </div>
+                </div>
+
+                <div class="service-item animate-on-scroll">
+                    <img src="images/7.jpeg" alt="Digital and Offset Printing" class="img-fluid">
+                    <div>
+                        <h3>Digital & Offset Printing</h3>
+                        <p>Whether you need a short run of vibrant digital prints or a massive volume of offset
+                            production, we have the technology to deliver the highest quality, quickly and efficiently.
+                        </p>
+                        <p><strong>Products Include:</strong></p>
+                        <div class="features-grid">
+                            <span class="feature"><i class="fas fa-id-card"></i> Business Cards</span>
+                            <span class="feature"><i class="fas fa-envelope-open-text"></i> Letterheads &
+                                Envelopes</span>
+                            <span class="feature"><i class="fas fa-bullhorn"></i> Posters & Banners</span>
+                            <span class="feature"><i class="fas fa-book-open"></i> Booklets & Catalogs</span>
+                        </div>
+                        <a href="contact.html?service=print" class="btn mt-4">Get a Print Quote</a>
+                    </div>
+                </div>
+
+                <div class="service-item animate-on-scroll">
+                    <img src="images/LARGE.jpg" alt="Wide Format Printing and Signage" class="img-fluid">
+                    <div>
+                        <h3>Wide Format & Signage</h3>
+                        <p>Go big! We create large-scale prints perfect for promotions, events, and permanent branding,
+                            including vehicle wraps, billboards, and custom exhibition stands.</p>
+                        <p><strong>Products Include:</strong></p>
+                        <div class="features-grid">
+                            <span class="feature"><i class="fas fa-map-marked-alt"></i> Indoor & Outdoor Banners</span>
+                            <span class="feature"><i class="fas fa-car-side"></i> Vehicle Graphics & Wraps</span>
+                            <span class="feature"><i class="fas fa-store"></i> Shop Front Signage</span>
+                            <span class="feature"><i class="fas fa-calendar-alt"></i> Pop-up Displays</span>
+                        </div>
+                        <a href="contact.html?service=wideformat" class="btn mt-4">View Signage Options</a>
+                    </div>
+                </div>
+
+                <div class="service-item animate-on-scroll">
+                    <img src="images/26.jpeg" alt="Stationery and Finishing" class="img-fluid">
+                    <div>
+                        <h3>Custom Stationery & Finishing</h3>
+                        <p>Enhance your corporate image with high-end, personalized stationery. We offer premium paper
+                            stocks and special finishes like embossing, spot UV, and die-cutting.</p>
+                        <p><strong>Finishing Options:</strong></p>
+                        <div class="features-grid">
+                            <span class="feature"><i class="fas fa-certificate"></i> Laminating & Varnish</span>
+                            <span class="feature"><i class="fas fa-stamp"></i> Embossing & Debossing</span>
+                            <span class="feature"><i class="fas fa-cut"></i> Custom Die-Cutting</span>
+                            <span class="feature"><i class="fas fa-money-check-alt"></i> Foiling</span>
+                        </div>
+                        <a href="contact.html?service=stationery" class="btn mt-4">Design Premium Stationery</a>
+                    </div>
+                </div>
+
+                <div class="service-item animate-on-scroll">
+                    <img src="images/N2.png" alt="Epson CD Printing" class="img-fluid">
+                    <div>
+                        <h3>Epson CD Printing. (Cards)</h3>
+                        <p>We provide you with customised ID cards for your business, institution, campany, etc. Hard
+                            Epson carsd to improve on idenetity and professioanlism in your area.</p>
+                        <p><strong>Finishing Options:</strong></p>
+                        <div class="features-grid">
+                            <span class="feature"><i class="fas fa-compact-disc"></i> Direct to CD Printing</span>
+                            <span class="feature"><i class="fas fa-tags"></i> CD/DVD Stickers</span>
+                            <span class="feature"><i class="fas fa-id-card"></i> Epson Plastic IDs</span>
+                            <span class="feature"><i class="fas fa-credit-card"></i> For All plastic ID</span>
+
+                        </div>
+                        <a href="contact.html?service=stationery" class="btn mt-4">Order for a customized card</a>
+                    </div>
+                </div>
+
+                <div class="service-item animate-on-scroll">
+                    <img src="images/N3.jpeg" alt="Signage" class="img-fluid">
+                    <div>
+                        <h3>Signage (Advert Posts)</h3>
+                        <p>For all types of sign posts, always fell free to contact us and we shall always be at your
+                            services. </p>
+                        <p><strong>Products:</strong></p>
+                        <div class="features-grid">
+                            <span class="feature"><i class="fas fa-image"></i> Display & Foam board frames</span>
+                            <span class="feature"><i class="fas fa-brush"></i> Indoor wall branding</span>
+                            <span class="feature"><i class="fas fa-city"></i> Outdoor wall branding</span>
+                            <span class="feature"><i class="fas fa-signs-post"></i> All sign posts</span>
+
+
+                        </div>
+                        <a href="contact.html?service=stationery" class="btn mt-4">Order for a customized card</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="call-to-action">
+            <div class="container animate-on-scroll">
+                <h2>Don't see what you need?</h2>
+                <p>We handle custom requests! Tell us about your unique project and we'll make it happen.</p>
+                <a href="contact.html" class="btn">Request a Custom Quote</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+
+            <div class="footer-logo-group footer-column">
+                <a href="index.html" class="footer-logo">SAMMY WORX PRINTS & DESIGN</a>
+                <p>"Best in the game"</p>
+            </div>
+
+            <div class="footer-nav footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="social-links footer-column">
+                <h3>Follow Us</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                </div>
+            </div>
+
+            <p class="mt-3">&copy; 2026 Sammy Worx Prints & Design. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="backToTopBtn" class="btn to-top-btn"
+        style="display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border-radius: 50%; width: 50px; height: 50px; font-size: 1.5em; background-color: var(--primary-color); color: white; border: none; cursor: pointer;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

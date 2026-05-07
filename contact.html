@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - SAMMY WORX PRINTS AND DESIGN</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        @keyframes iconPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Specific styles for the Contact Page */
+
+        /* Hero Section Styling (Navy/Gold Theme) */
+        .hero-small {
+            background: linear-gradient(135deg, rgba(10, 25, 47, 0.9), rgba(17, 34, 64, 0.8)), url('images/contact-hero-bg.jpg') no-repeat center center/cover;
+            color: white;
+            padding: 150px 0 80px;
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        .hero-small h1 {
+            font-size: 3.5em;
+            color: white;
+            font-weight: 700;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        /* Contact Layout */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
+            text-align: left;
+            align-items: flex-start;
+            /* Aligns content blocks to the top */
+        }
+
+        /* Contact Info Box */
+        .contact-info {
+            padding: 40px;
+            /* Increased padding */
+            background-color: var(--primary-color);
+            /* Primary color background */
+            color: white;
+            border-radius: 12px;
+            /* Increased radius */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            /* Deeper shadow */
+        }
+
+        .contact-info h3 {
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        /* Info Item Styles */
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            /* Increased margin */
+            transition: background-color 0.3s ease;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .info-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Subtle hover background */
+        }
+
+        .info-item i {
+            font-size: 1.8em;
+            /* Increased icon size */
+            color: var(--accent-color);
+            /* Gold color for icons */
+            width: 45px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        /* Icon Hover Animation */
+        .info-item:hover i {
+            animation: iconPulse 0.6s ease-in-out;
+        }
+
+        .info-item h4 {
+            font-size: 1.1em;
+            margin: 0 0 4px 0;
+            color: var(--accent-color);
+        }
+
+        .info-item p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Map Container */
+        .map-container {
+            margin-top: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 3px solid var(--accent-color);
+            /* Accent border around map */
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 300px;
+            border: 0;
+        }
+
+        /* Contact Form Styles */
+        .contact-form {
+            padding: 40px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form h3 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            /* Increased padding */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            /* Increased radius for modern look */
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Input Focus Effect */
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+            /* Gold glow on focus */
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Submit Button Styling */
+        .contact-form .btn {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            width: auto;
+            display: block;
+            margin-top: 20px;
+        }
+
+        .contact-form .btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+
+        @media (max-width: 992px) {
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-small {
+                padding: 100px 0 60px;
+            }
+
+            .contact-info,
+            .contact-form {
+                padding: 30px;
+            }
+        }
+
+        .contact {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .contact-box {
+            flex: 1 1 300px;
+            background-color: #0044ff;
+            padding: 0;
+            border-radius: 20px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            color: white;
+            text-align: center;
+            font-size: medium;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/logo.jpeg" alt="Sammy Worx Logo">
+                SAMMY WORX <span>PRINTS & DESIGN</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="contact.html" class="active">Contact Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-small">
+            <div class="container animate-on-scroll">
+                <h1>Contact Sammy Worx</h1>
+                <p>We're here to help you bring your next print and design project to life.</p>
+            </div>
+        </section>
+
+        <section class="py-5">
+            <div class="container contact-content">
+
+                <div class="contact-info animate-on-scroll">
+                    <h3>Get In Touch</h3>
+                    <p style="margin-bottom: 25px;">Have a question about a service or need a quote? Reach out to us
+                        directly using the details below or fill out the quick contact form.</p>
+
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Our Location (Workshop & Stationery)</h4>
+                            <p>Uganda, Mukono-District, Kisoga-Town, along Katosi Road</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Phone Contact</h4>
+                            <p>Office Line: 0393 102 284</p>
+                            <p>Design Dept: (256) 708 201 655 / (256) 764 444 001</p>
+                            <p>WhatsApp line: (256) 744 551 764</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>General Inquiries: samueltendo4@gmail.com</p>
+                            <p>Sales: samueltendo4@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Business Hours</h4>
+                            <p>Mon - Fri: 8:00 AM - 9:00 PM</p>
+                            <p>Saturday: 8:00 AM - 8:30 PM</p>
+                            <p>Sunday: 1:00 PM - 8:00 PM </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-box">
+                        <p><b>Call via whatsapp</b></p>
+                        <a href="https://wa.me/256708201655?text=I%20want%20to%20make%20business%20at%20your%20work%20shop.%20Reply%20to%20me%20Sammy"
+                            target="_blank">
+                            <img src="call.gif" alt="Contact Us on WhatsApp" class="section-gif" width="100"
+                                height="100">
+                        </a>
+                    </div>
+
+                    <div class="map-container">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15958.802198083984!2d32.78310310000001!3d0.3424036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177e77b4d324d577%3A0x6a1c5188f4b009e4!2sKisoga!5e0!3m2!1sen!2sug!4v1701540300000!5m2!1sen!2sug"
+                            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+
+                </div>
+
+                <div class="contact-form animate-on-scroll" style="transition-delay: 0.2s;">
+                    <h3>Send Us a Message</h3>
+                    <form action="api/submit.php"  id="form-contactus" method="POST">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your full name here" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="eg. samueltendo4@gmail.com"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Interested Service</label>
+                            <select id="service" name="service">
+                                <option value="">-- Select Service --</option>
+                                <option value="design">Graphic Design</option>
+                                <option value="printing">Digital & Offset Printing</option>
+                                <option value="wideformat">Wide Format / Signage</option>
+                                <option value="stationery">Stationery & Finishing</option>
+                                <option value="other">Other Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your Project Details / Message</label>
+                            <textarea id="message" name="message" placeholder="Tell us about your project..."
+                                required></textarea>
+                        </div>
+                        <button type="submit" name="submit" id="submit"  class="btn">Send Message</button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+
+            <div class="footer-logo-group footer-column">
+                <a href="index.html" class="footer-logo">SAMMY WORX PRINTS & DESIGN</a>
+                <p>"Best in the game"</p>
+            </div>
+
+            <div class="footer-nav footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="social-links footer-column">
+                <h3>Follow Us</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                </div>
+            </div>
+
+            <p class="mt-3">&copy; 2026 Sammy Worx Prints & Design. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="backToTopBtn" class="btn"
+        style="display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border-radius: 50%; width: 50px; height: 50px; font-size: 1.5em; background-color: var(--primary-color); color: white; border: none; cursor: pointer;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+<script>
+
+submit_form = document.getElementById("submit");
+
+    
+</script>
