@@ -1,4 +1,6 @@
 <?php
+ini_set('session.cookie_path', '/');
+
 session_start();
 $servername = getenv('DB_HOST');
 $username   = getenv('DB_USER');
