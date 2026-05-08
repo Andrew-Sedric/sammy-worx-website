@@ -45,7 +45,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         curl_exec($ch);
         curl_close($ch);
 
-        echo "<h1>Success!</h1><p>Information saved and professional email sent.</p>";
+        echo "
+        <div style='font-family: Arial, sans-serif; text-align: center; padding: 50px; color: #333;'>
+            <div style='font-size: 50px; color: #4CAF50;'>✔</div>
+            <h1>Success!</h1>
+            <p style='font-size: 18px;'>Information saved and sent to Sammy Worx.<br> 
+            They will respond to you as soon as possible.</p>
+            
+            <br><br>
+
+            <a href='/' style='
+                background-color: #007bff; 
+                color: white; 
+                padding: 12px 25px; 
+                text-decoration: none; 
+                border-radius: 5px; 
+                font-weight: bold;
+                display: inline-block;
+                transition: background-color 0.3s;
+            '>Go back to Home Page</a>
+        </div>";
+
     } else {
         echo "Error: " . $conn->error;
     }
