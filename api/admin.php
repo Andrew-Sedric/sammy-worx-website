@@ -1,9 +1,12 @@
 <?php
+// Set session config BEFORE starting session
 ini_set('session.cookie_path', '/');
+ini_set('session.cookie_httponly', '1');
+ini_set('session.cookie_secure', '0'); // Set to 1 if using HTTPS
 session_start();
 
-// Final Fix: Use empty() to check session status for better compatibility
-if (empty($_SESSION['admin_logged_in'])) {
+// Check if user is logged in
+if (empty($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     header("Location: /login");
     exit();
 }
@@ -51,7 +54,7 @@ $result = $conn->query($sql);
 <body>
     <div class="header">
         <h1>Client Inquiries</h1>
-        <a href="/api/logout" class="logout">Logout</a>
+        <a href="/api/logout.php" class="logout">Logout</a>
     </div>
     <table>
         <thead>

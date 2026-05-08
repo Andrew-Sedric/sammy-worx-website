@@ -1,38 +1,82 @@
 <?php
+// Set session config BEFORE starting session
 ini_set('session.cookie_path', '/');
+ini_set('session.cookie_httponly', '1');
+ini_set('session.cookie_secure', '0'); // Set to 1 if using HTTPS
 session_start();
 
+// Only process POST requests
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("Location: /login");
+    exit();
+}
+
+// Get database credentials
 $servername = getenv('DB_HOST');
-$username   = getenv('DB_USER');
-$password   = getenv('DB_PASSWORD');
+$dbuser     = getenv('DB_USER');
+$dbpass     = getenv('DB_PASSWORD');
 $dbname     = getenv('DB_NAME');
 
-// 1. Database Connection
-$conn = mysqli_init();
-mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL); 
-$conn->real_connect($servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 2. Secure Input
-    $user = mysqli_real_escape_string($conn, $_POST['username']);
-    $pass = mysqli_real_escape_string($conn, $_POST['password']);
-
-    // 3. Check database for this user
-    $sql = "SELECT * FROM users WHERE username = '$user' AND password = '$pass' LIMIT 1";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        // SUCCESS: Set session and save it
+// Check if credentials exist
+if (!$servername || !$dbuser || !$dbname) {
+    // If database not configured, use demo credentials
+    $_POST['username'] = isset($_POST['username']) ? trim($_POST['username']) : '';
+    $_POST['password'] = isset($_POST['password']) ? trim($_POST['password']) : '';
+    
+    // Demo login for testing
+    if ($_POST['username'] === 'admin' && $_POST['password'] === 'admin123') {
         $_SESSION['admin_logged_in'] = true;
-        session_write_close(); 
-        
-        // Redirect to the clean route defined in vercel.json
-        header("Location: /admin"); 
-        exit(); 
+        $_SESSION['username'] = $_POST['username'];
+        header("Location: /admin");
+        exit();
     } else {
-        // FAILURE: Show alert and return to login
-        echo "<script>alert('Wrong username or password!'); window.location.href='/login';</script>";
+        echo "<script>alert('Wrong username or password!'); window.history.back();</script>";
         exit();
     }
+}
+
+// Database Connection
+$conn = mysqli_init();
+mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL); 
+$conn->real_connect($servername, $dbuser, $dbpass, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+if ($conn->connect_error) {
+    echo "<script>alert('Database connection error. Please try again later.'); window.history.back();</script>";
+    exit();
+}
+
+// Get and validate input
+$user = isset($_POST['username']) ? trim($_POST['username']) : '';
+$pass = isset($_POST['password']) ? trim($_POST['password']) : '';
+
+if (empty($user) || empty($pass)) {
+    echo "<script>alert('Username and password are required!'); window.history.back();</script>";
+    exit();
+}
+
+// Secure the input
+$user = mysqli_real_escape_string($conn, $user);
+$pass = mysqli_real_escape_string($conn, $pass);
+
+// Check database for this user
+$sql = "SELECT * FROM users WHERE username = '$user' AND password = '$pass' LIMIT 1";
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    // SUCCESS: Set session
+    $_SESSION['admin_logged_in'] = true;
+    $_SESSION['username'] = $user;
+    
+    // Close connection
+    $conn->close();
+    
+    // Redirect to admin dashboard
+    header("Location: /admin");
+    exit();
+} else {
+    // FAILURE: Redirect back with error
+    $conn->close();
+    echo "<script>alert('Wrong username or password!'); window.history.back();</script>";
+    exit();
 }
 ?>
