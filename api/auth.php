@@ -21,9 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $_SESSION['admin_logged_in'] = true;
-        header("Location: ../admin"); // Successful login
+        header("Location: /admin"); // Successful login
     } else {
-        echo "<script>alert('Wrong username or password!'); window.location.href='../login.php';</script>";
+        echo "<script>alert('Wrong username or password!'); window.location.href='/login.php';</script>";
     }
 }
 ?>
