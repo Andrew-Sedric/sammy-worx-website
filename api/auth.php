@@ -11,39 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
-// Get database credentials
-$servername = getenv('DB_HOST');
-$dbuser     = getenv('DB_USER');
-$dbpass     = getenv('DB_PASSWORD');
-$dbname     = getenv('DB_NAME');
-
-// Check if credentials exist
-if (!$servername || !$dbuser || !$dbname) {
-    // If database not configured, use demo credentials
-    $_POST['username'] = isset($_POST['username']) ? trim($_POST['username']) : '';
-    $_POST['password'] = isset($_POST['password']) ? trim($_POST['password']) : '';
-    
-    // Demo login for testing
-    if ($_POST['username'] === 'staff' && $_POST['password'] === 'staff123') {
-        $_SESSION['admin_logged_in'] = true;
-        $_SESSION['username'] = $_POST['username'];
-        header("Location: admin.php");
-        exit();
-    } else {
-        echo "<script>alert('Wrong username or password!'); window.history.back();</script>";
-        exit();
-    }
-}
-
-// Database Connection
-$conn = mysqli_init();
-mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL); 
-$conn->real_connect($servername, $dbuser, $dbpass, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-if ($conn->connect_error) {
-    echo "<script>alert('Database connection error. Please try again later.'); window.history.back();</script>";
-    exit();
-}
+// Load database configuration
+require_once 'config.php';
 
 // Get and validate input
 $user = isset($_POST['username']) ? trim($_POST['username']) : '';
@@ -54,18 +23,55 @@ if (empty($user) || empty($pass)) {
     exit();
 }
 
-// Secure the input
-$user = mysqli_real_escape_string($conn, $user);
-$pass = mysqli_real_escape_string($conn, $pass);
+// Check for incomplete configuration
+if (strpos(DB_HOST, 'your_') !== false || strpos(DB_USER, 'your_') !== false || strpos(DB_NAME, 'your_') !== false) {
+    echo "<script>alert('Database is not configured. Please update api/config.php with your TiDB credentials.'); window.history.back();</script>";
+    exit();
+}
 
-// Check database for this user
-$sql = "SELECT * FROM users WHERE username = '$user' AND password = '$pass' LIMIT 1";
+// Connect to TiDB with SSL
+mysqli_report(MYSQLI_REPORT_OFF);
+$conn = mysqli_init();
+
+if (USE_SSL) {
+    mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
+}
+
+$connection = @$conn->real_connect(
+    DB_HOST, 
+    DB_USER, 
+    DB_PASSWORD, 
+    DB_NAME, 
+    DB_PORT, 
+    NULL, 
+    USE_SSL ? MYSQLI_CLIENT_SSL : 0
+);
+
+if (!$connection) {
+    echo "<script>alert('Database connection failed. Please check your TiDB configuration in api/config.php. Error: " . addslashes($conn->connect_error) . "'); window.history.back();</script>";
+    exit();
+}
+
+// Set charset to UTF8
+$conn->set_charset("utf8mb4");
+
+// Sanitize input
+$user = $conn->real_escape_string($user);
+$pass = $conn->real_escape_string($pass);
+
+// Check database for this user with password hashing support
+// Try both plain text and hashed passwords for compatibility
+$sql = "SELECT id, username FROM users WHERE (username = '$user' AND password = '$pass') OR (username = '$user' AND password = MD5('$pass')) LIMIT 1";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
+    $userData = $result->fetch_assoc();
+    
     // SUCCESS: Set session
     $_SESSION['admin_logged_in'] = true;
-    $_SESSION['username'] = $user;
+    $_SESSION['username'] = $userData['username'];
+    $_SESSION['user_id'] = $userData['id'];
+    $_SESSION['login_time'] = time();
     
     // Close connection
     $conn->close();
