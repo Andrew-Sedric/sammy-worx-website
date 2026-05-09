@@ -7,7 +7,7 @@ session_start();
 
 // Only process POST requests
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: /login");
+    header("Location: login.php");
     exit();
 }
 
@@ -24,10 +24,10 @@ if (!$servername || !$dbuser || !$dbname) {
     $_POST['password'] = isset($_POST['password']) ? trim($_POST['password']) : '';
     
     // Demo login for testing
-    if ($_POST['username'] === 'admin' && $_POST['password'] === 'admin123') {
+    if ($_POST['username'] === 'staff' && $_POST['password'] === 'staff123') {
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['username'] = $_POST['username'];
-        header("Location: /admin");
+        header("Location: admin.php");
         exit();
     } else {
         echo "<script>alert('Wrong username or password!'); window.history.back();</script>";
@@ -71,7 +71,7 @@ if ($result && $result->num_rows > 0) {
     $conn->close();
     
     // Redirect to admin dashboard
-    header("Location: /admin");
+    header("Location: admin.php");
     exit();
 } else {
     // FAILURE: Redirect back with error

@@ -7,7 +7,7 @@ session_start();
 
 // Check if user is logged in
 if (empty($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header("Location: /login");
+    header("Location: login.php");
     exit();
 }
 
@@ -16,17 +16,33 @@ $username   = getenv('DB_USER');
 $password   = getenv('DB_PASSWORD');
 $dbname     = getenv('DB_NAME');
 
-// Database Connection
-$conn = mysqli_init();
-mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL); 
-$conn->real_connect($servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+$dbAvailable = !empty($servername) && !empty($username) && !empty($dbname);
+$inquiries = [];
+$dbError = null;
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($dbAvailable) {
+    mysqli_report(MYSQLI_REPORT_OFF);
+    $conn = mysqli_init();
+    mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
+
+    if ($conn->real_connect($servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL)) {
+        $sql = "SELECT * FROM contact_inquiries ORDER BY created_at DESC";
+        $result = $conn->query($sql);
+
+        if ($result) {
+            $inquiries = $result->fetch_all(MYSQLI_ASSOC);
+            $result->free();
+        } else {
+            $dbError = "Failed to load inquiries from the database.";
+        }
+
+        $conn->close();
+    } else {
+        $dbError = "Database connection failed: " . $conn->connect_error;
+    }
+} else {
+    $dbError = "Database is not configured locally. Please configure DB credentials or use demo mode.";
 }
-
-$sql = "SELECT * FROM contact_inquiries ORDER BY created_at DESC";
-$result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +70,7 @@ $result = $conn->query($sql);
 <body>
     <div class="header">
         <h1>Client Inquiries</h1>
-        <a href="/api/logout.php" class="logout">Logout</a>
+        <a href="logout.php" class="logout">Logout</a>
     </div>
     <table>
         <thead>
