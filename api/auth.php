@@ -48,7 +48,8 @@ $connection = @$conn->real_connect(
 );
 
 if (!$connection) {
-    echo "<script>alert('Database connection failed. Please check your TiDB configuration in api/config.php. Error: " . addslashes($conn->connect_error) . "'); window.history.back();</script>";
+    $error = $conn->connect_error;
+    echo "<script>alert('Database connection failed.\\n\\nError: " . addslashes($error) . "\\n\\nPlease check your TiDB configuration in api/config.php'); window.history.back();</script>";
     exit();
 }
 
@@ -59,9 +60,13 @@ $conn->set_charset("utf8mb4");
 $user = $conn->real_escape_string($user);
 $pass = $conn->real_escape_string($pass);
 
+// Debug: Check if user exists at all (check password field type)
+$debug_sql = "SELECT id, username, password FROM users WHERE username = '$user' LIMIT 1";
+$debug_result = $conn->query($debug_sql);
+
 // Check database for this user with password hashing support
 // Try both plain text and hashed passwords for compatibility
-$sql = "SELECT id, username FROM users WHERE (username = '$user' AND password = '$pass') OR (username = '$user' AND password = MD5('$pass')) LIMIT 1";
+$sql = "SELECT id, username FROM users WHERE username = '$user' AND (password = '$pass' OR password = MD5('$pass')) LIMIT 1";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -80,9 +85,19 @@ if ($result && $result->num_rows > 0) {
     header("Location: admin.php");
     exit();
 } else {
-    // FAILURE: Redirect back with error
+    // FAILURE: Provide more detailed error
+    $error_msg = "Wrong username or password!";
+    
+    // Check if user exists but password is wrong
+    if ($debug_result && $debug_result->num_rows > 0) {
+        $debug_row = $debug_result->fetch_assoc();
+        $error_msg = "User found but password does not match.\\n\\nStored password format: " . substr($debug_row['password'], 0, 10) . "...";
+    } else {
+        $error_msg = "Username not found in database.";
+    }
+    
     $conn->close();
-    echo "<script>alert('Wrong username or password!'); window.history.back();</script>";
+    echo "<script>alert('" . addslashes($error_msg) . "'); window.history.back();</script>";
     exit();
 }
 ?>
