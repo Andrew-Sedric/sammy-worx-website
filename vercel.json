@@ -5,9 +5,14 @@
     }
   },
   "routes": [
+    { "src": "/api/login\\.php", "dest": "/api/login.php" },
+    { "src": "/api/auth\\.php", "dest": "/api/auth.php" },
+    { "src": "/api/admin\\.php", "dest": "/api/admin.php" },
+    { "src": "/api/logout\\.php", "dest": "/api/logout.php" },
     { "src": "/login", "dest": "/api/login.php" },
     { "src": "/admin", "dest": "/api/admin.php" },
-    { "src": "/api/(.*)", "dest": "/api/$1" }
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/$1" }
   ],
   "headers": [
     {
@@ -16,5 +21,11 @@
         { "key": "Cache-Control", "value": "no-store, max-age=0" }
       ]
     }
-  ]
+  ],
+  "env": {
+    "DB_HOST": "gateway01.ap-southeast-1.prod.alicloud.tidbcloud.com",
+    "DB_USER": "21cRDQ1yQsS5317.root",
+    "DB_PASSWORD": "LZhyUl0yo2bHuMBE",
+    "DB_NAME": "sammyworx_db"
+  }
 }

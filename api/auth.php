@@ -1,100 +1,94 @@
 <?php
-// Set session config BEFORE starting session
-ini_set('session.cookie_path', '/');
-ini_set('session.cookie_httponly', '1');
-ini_set('session.cookie_secure', '0');
-session_start();
-
-// Only process POST requests
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: login.php");
-    exit();
-}
-
-// Load database configuration
 require_once 'config.php';
 
-// Get and validate input
-$user = isset($_POST['username']) ? trim($_POST['username']) : '';
-$pass = isset($_POST['password']) ? trim($_POST['password']) : '';
+// Configure session for Vercel
+if (IS_VERCEL && !file_exists('/tmp')) {
+    mkdir('/tmp', 0777, true);
+}
 
-if (empty($user) || empty($pass)) {
-    $_SESSION['login_error'] = 'Username and password are required!';
-    header("Location: login.php");
+// Start session
+session_start();
+
+// Verify POST request
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("Location: login.php", true, 302);
     exit();
 }
 
-// Check for incomplete configuration
-if (strpos(DB_HOST, 'your_') !== false) {
-    $_SESSION['login_error'] = 'Database is not configured properly.';
-    header("Location: login.php");
+// Get form input
+$username = isset($_POST['username']) ? trim($_POST['username']) : '';
+$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+
+// Validate input
+if (empty($username) || empty($password)) {
+    $_SESSION['login_error'] = 'Username and password are required';
+    header("Location: login.php", true, 302);
     exit();
 }
 
-// Connect to TiDB - try without SSL first
+// Connect to TiDB
 mysqli_report(MYSQLI_REPORT_OFF);
 $conn = mysqli_init();
 
-$connection = @$conn->real_connect(
-    DB_HOST, 
-    DB_USER, 
-    DB_PASSWORD, 
-    DB_NAME, 
-    DB_PORT
+// Set connection options
+if (USE_SSL) {
+    mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
+}
+
+$connected = @$conn->real_connect(
+    DB_HOST,
+    DB_USER,
+    DB_PASSWORD,
+    DB_NAME,
+    DB_PORT,
+    NULL,
+    USE_SSL ? MYSQLI_CLIENT_SSL : 0
 );
 
-if (!$connection) {
-    // Try with SSL
+if (!$connected) {
+    // Try without SSL as fallback
     $conn = mysqli_init();
-    mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
-    $connection = @$conn->real_connect(
-        DB_HOST, 
-        DB_USER, 
-        DB_PASSWORD, 
-        DB_NAME, 
-        DB_PORT, 
-        NULL, 
-        MYSQLI_CLIENT_SSL
+    $connected = @$conn->real_connect(
+        DB_HOST,
+        DB_USER,
+        DB_PASSWORD,
+        DB_NAME,
+        DB_PORT
     );
     
-    if (!$connection) {
-        $_SESSION['login_error'] = 'Database connection failed: ' . $conn->connect_error;
-        header("Location: login.php");
+    if (!$connected) {
+        $_SESSION['login_error'] = 'Database connection failed';
+        header("Location: login.php", true, 302);
         exit();
     }
 }
 
-// Set charset to UTF8
 $conn->set_charset("utf8mb4");
 
-// Sanitize input
-$user = $conn->real_escape_string($user);
-$pass = $conn->real_escape_string($pass);
+// Escape input
+$username = $conn->real_escape_string($username);
+$password = $conn->real_escape_string($password);
 
-// Check database for this user
-$sql = "SELECT id, username FROM users WHERE username = '$user' AND password = '$pass' LIMIT 1";
+// Query database
+$sql = "SELECT id, username FROM users WHERE username = '$username' AND password = '$password' LIMIT 1";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
-    $userData = $result->fetch_assoc();
-    
-    // SUCCESS: Set session
+    // Login successful
+    $user = $result->fetch_assoc();
     $_SESSION['admin_logged_in'] = true;
-    $_SESSION['username'] = $userData['username'];
-    $_SESSION['user_id'] = $userData['id'];
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['user_id'] = $user['id'];
     $_SESSION['login_time'] = time();
     
-    // Close connection
     $conn->close();
-    
-    // Redirect to admin dashboard
-    header("Location: admin.php");
+    header("Location: admin.php", true, 302);
     exit();
 } else {
-    // FAILURE
-    $_SESSION['login_error'] = 'Wrong username or password!';
+    // Login failed
+    $_SESSION['login_error'] = 'Wrong username or password';
     $conn->close();
-    header("Location: login.php");
+    header("Location: login.php", true, 302);
     exit();
 }
 ?>
