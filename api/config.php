@@ -1,25 +1,19 @@
 <?php
-// TiDB Database Configuration for Vercel
-// ========================================
-// Uses environment variables when available, falls back to direct config
+// TiDB Database Configuration - DIRECT CREDENTIALS
+// ==================================================
 
-$db_host = getenv('DB_HOST') ?: 'gateway01.ap-southeast-1.prod.alicloud.tidbcloud.com';
-$db_user = getenv('DB_USER') ?: '21cRDQ1yQsS5317.root';
-$db_pass = getenv('DB_PASSWORD') ?: 'LZhyUl0yo2bHuMBE';
-$db_name = getenv('DB_NAME') ?: 'sammyworx_db';
-
-define('DB_HOST', $db_host);
+// Direct database credentials (hardcoded for reliability)
+define('DB_HOST', 'gateway01.ap-southeast-1.prod.alicloud.tidbcloud.com');
 define('DB_PORT', 4000);
-define('DB_USER', $db_user);
-define('DB_PASSWORD', $db_pass);
-define('DB_NAME', $db_name);
+define('DB_USER', '21cRDQ1yQsS5317.root');
+define('DB_PASSWORD', 'LZhyUl0yo2bHuMBE');
+define('DB_NAME', 'sammyworx_db');
 
 // Vercel environment detection
 define('IS_VERCEL', !empty(getenv('VERCEL')));
 
 // SSL Settings for TiDB Cloud
 define('USE_SSL', true);
-define('SSL_VERIFY', false);
 
 // Session configuration for Vercel
 if (IS_VERCEL) {
