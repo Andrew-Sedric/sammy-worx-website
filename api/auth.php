@@ -92,8 +92,15 @@ if ($result->num_rows > 0) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['login_time'] = time();
 
+    // Regenerate session ID for security
+    session_regenerate_id(true);
+
     $result->free();
     $conn->close();
+
+    // Ensure session is written before redirect
+    session_write_close();
+
     header("Location: /api/admin.php", true, 302);
     exit();
 } else {
