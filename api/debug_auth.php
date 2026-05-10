@@ -25,7 +25,7 @@ echo "Password length: " . strlen($password) . "\n";
 // Validate input
 if (empty($username) || empty($password)) {
     echo "ERROR: Empty username or password\n";
-    echo "</pre><p><a href='login.php'>Back to Login</a></p>";
+    echo "</pre><p><a href='/api/login.php'>Back to Login</a></p>";
     exit();
 }
 
@@ -62,7 +62,7 @@ if (!$connected) {
 
 if (!$connected) {
     echo "ERROR: Database connection failed: " . $conn->connect_error . "\n";
-    echo "</pre><p><a href='login.php'>Back to Login</a></p>";
+    echo "</pre><p><a href='/api/login.php'>Back to Login</a></p>";
     exit();
 }
 
@@ -85,7 +85,7 @@ $result = $conn->query($sql);
 if (!$result) {
     echo "ERROR: Query failed: " . $conn->error . "\n";
     $conn->close();
-    echo "</pre><p><a href='login.php'>Back to Login</a></p>";
+    echo "</pre><p><a href='/api/login.php'>Back to Login</a></p>";
     exit();
 }
 
@@ -109,7 +109,7 @@ if ($result->num_rows > 0) {
 
     echo "</pre>";
     echo "<p style='color: green;'><b>Login successful! Redirecting...</b></p>";
-    echo "<script>setTimeout(function(){ window.location.href = 'admin.php'; }, 2000);</script>";
+    echo "<script>setTimeout(function(){ window.location.href = '/api/admin.php'; }, 2000);</script>";
     exit();
 } else {
     echo "FAILURE: No matching user found\n";
@@ -132,7 +132,7 @@ if ($result->num_rows > 0) {
 
     $result->free();
     $conn->close();
-    echo "</pre><p><a href='login.php'>Back to Login</a></p>";
+    echo "</pre><p><a href='/api/login.php'>Back to Login</a></p>";
     exit();
 }
 ?>

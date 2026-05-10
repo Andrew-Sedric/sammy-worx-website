@@ -28,6 +28,6 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect to login
-header("Location: login.php", true, 302);
+header("Location: /api/login.php", true, 302);
 exit();
 ?>

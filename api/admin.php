@@ -10,7 +10,7 @@ session_start();
 
 // Check if logged in
 if (empty($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header("Location: login.php", true, 302);
+    header("Location: /api/login.php", true, 302);
     exit();
 }
 

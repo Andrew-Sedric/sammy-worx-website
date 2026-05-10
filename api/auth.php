@@ -11,7 +11,7 @@ session_start();
 
 // Verify POST request
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: login.php", true, 302);
+    header("Location: /api/login.php", true, 302);
     exit();
 }
 
@@ -22,7 +22,7 @@ $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 // Validate input
 if (empty($username) || empty($password)) {
     $_SESSION['login_error'] = 'Username and password are required';
-    header("Location: login.php", true, 302);
+    header("Location: /api/login.php", true, 302);
     exit();
 }
 
@@ -59,7 +59,7 @@ if (!$connected) {
 // If still not connected, show error
 if (!$connected) {
     $_SESSION['login_error'] = 'Database connection failed: ' . $conn->connect_error;
-    header("Location: login.php", true, 302);
+    header("Location: /api/login.php", true, 302);
     exit();
 }
 
@@ -78,7 +78,7 @@ $result = $conn->query($sql);
 if (!$result) {
     $_SESSION['login_error'] = 'Database error: ' . $conn->error;
     $conn->close();
-    header("Location: login.php", true, 302);
+    header("Location: /api/login.php", true, 302);
     exit();
 }
 
@@ -93,14 +93,14 @@ if ($result->num_rows > 0) {
     
     $result->free();
     $conn->close();
-    header("Location: admin.php", true, 302);
+    header("Location: /api/admin.php", true, 302);
     exit();
 } else {
     // LOGIN FAILED
     $_SESSION['login_error'] = 'Wrong username or password';
     $result->free();
     $conn->close();
-    header("Location: login.php", true, 302);
+    header("Location: /api/login.php", true, 302);
     exit();
 }
 ?>

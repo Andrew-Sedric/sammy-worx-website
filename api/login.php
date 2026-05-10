@@ -13,7 +13,7 @@ if (isset($_SESSION['login_error'])) unset($_SESSION['login_error']);
 
 // If already logged in, redirect to admin
 if (!empty($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    header("Location: admin.php", true, 302);
+    header("Location: /api/admin.php", true, 302);
     exit();
 }
 ?><!DOCTYPE html>
@@ -37,7 +37,7 @@ if (!empty($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === tru
         <?php if ($error): ?>
         <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        <form action="debug_auth.php" method="POST">
+        <form action="/api/auth.php" method="POST">
             <input type="text" name="username" placeholder="Username" required autofocus>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
