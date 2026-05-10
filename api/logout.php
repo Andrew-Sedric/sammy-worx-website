@@ -8,8 +8,6 @@ if (IS_VERCEL && !file_exists('/tmp')) {
 
 session_start();
 
-session_start();
-
 // Destroy session
 $_SESSION = array();
 

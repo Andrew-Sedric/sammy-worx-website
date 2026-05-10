@@ -9,8 +9,6 @@ if (IS_VERCEL && !file_exists('/tmp')) {
 session_start();
 
 // Check if logged in
-session_start();
-
 $user_data = null;
 if (IS_VERCEL && isset($sessionHandler)) {
     // Use database session validation for Vercel
