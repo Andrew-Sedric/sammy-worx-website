@@ -1,23 +1,24 @@
 <?php
+// Cleaned file header to avoid hidden BOM/whitespace before PHP output.
 // Database Session Handler for Vercel compatibility
 class DatabaseSessionHandler implements SessionHandlerInterface {
     private $conn;
     private $session_lifetime;
 
-    public function __construct($conn) {
+    public function __construct(mysqli $conn) {
         $this->conn = $conn;
         $this->session_lifetime = 86400; // 24 hours
     }
 
-    public function open($save_path, $session_name) {
+    public function open(string $save_path, string $session_name): bool {
         return true;
     }
 
-    public function close() {
+    public function close(): bool {
         return true;
     }
 
-    public function read($session_id) {
+    public function read(string $session_id): string {
         $stmt = $this->conn->prepare("SELECT user_id, username, login_time FROM sessions WHERE session_id = ? AND last_activity > DATE_SUB(NOW(), INTERVAL ? SECOND)");
         $stmt->bind_param("si", $session_id, $this->session_lifetime);
         $stmt->execute();
@@ -44,10 +45,10 @@ class DatabaseSessionHandler implements SessionHandlerInterface {
         return '';
     }
 
-    public function write($session_id, $session_data) {
-        $data = unserialize($session_data);
+    public function write(string $session_id, string $session_data): bool {
+        $data = @unserialize($session_data);
 
-        if (!isset($data['admin_logged_in']) || !$data['admin_logged_in']) {
+        if (!is_array($data) || !isset($data['admin_logged_in']) || !$data['admin_logged_in']) {
             // Not a valid admin session, don't store
             return true;
         }
@@ -68,20 +69,21 @@ class DatabaseSessionHandler implements SessionHandlerInterface {
         return $result;
     }
 
-    public function destroy($session_id) {
+    public function destroy(string $session_id): bool {
         $stmt = $this->conn->prepare("DELETE FROM sessions WHERE session_id = ?");
         $stmt->bind_param("s", $session_id);
-        $result = $stmt->execute();
+        $result = (bool) $stmt->execute();
         $stmt->close();
         return $result;
     }
 
-    public function gc($maxlifetime) {
+    public function gc(int $maxlifetime): int|false {
         $stmt = $this->conn->prepare("DELETE FROM sessions WHERE last_activity < DATE_SUB(NOW(), INTERVAL ? SECOND)");
         $stmt->bind_param("i", $this->session_lifetime);
         $result = $stmt->execute();
+        $deleted = $stmt->affected_rows;
         $stmt->close();
-        return $result;
+        return $result ? $deleted : false;
     }
 
     public function create_session($user_id, $username) {
@@ -124,4 +126,3 @@ class DatabaseSessionHandler implements SessionHandlerInterface {
         return false;
     }
 }
-?>

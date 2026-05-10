@@ -87,32 +87,10 @@ if ($result->num_rows > 0) {
     // LOGIN SUCCESS
     $user = $result->fetch_assoc();
 
-    // Start session and create database-backed session
-    session_start();
-
-    if (IS_VERCEL && isset($sessionHandler)) {
-        // Use database session handler for Vercel
-        $session_id = $sessionHandler->create_session($user['id'], $user['username']);
-        if ($session_id) {
-            session_id($session_id);
-            $_SESSION['admin_logged_in'] = true;
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['login_time'] = time();
-        } else {
-            $_SESSION['login_error'] = 'Session creation failed';
-            $result->free();
-            $conn->close();
-            header("Location: /api/login.php", true, 302);
-            exit();
-        }
-    } else {
-        // Fallback for local development
-        $_SESSION['admin_logged_in'] = true;
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['login_time'] = time();
-    }
+    $_SESSION['admin_logged_in'] = true;
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['login_time'] = time();
 
     $result->free();
     $conn->close();

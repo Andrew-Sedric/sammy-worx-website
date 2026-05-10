@@ -1,4 +1,5 @@
 <?php
+// Cleaned file header to avoid hidden BOM/whitespace before PHP output.
 // TiDB Database Configuration - DIRECT CREDENTIALS
 // ==================================================
 
@@ -69,4 +70,3 @@ ini_set('session.cookie_path', '/');
 ini_set('session.cookie_httponly', '1');
 ini_set('session.cookie_samesite', 'Lax');
 
-?>
