@@ -9,6 +9,8 @@
     { "src": "/api/auth\\.php", "dest": "/api/auth.php" },
     { "src": "/api/admin\\.php", "dest": "/api/admin.php" },
     { "src": "/api/logout\\.php", "dest": "/api/logout.php" },
+    { "src": "/api/test_db\\.php", "dest": "/api/test_db.php" },
+    { "src": "/api/setup_sessions\\.php", "dest": "/api/setup_sessions.php" },
     { "src": "/login", "dest": "/api/login.php" },
     { "src": "/admin", "dest": "/api/admin.php" },
     { "src": "/api/(.*)", "dest": "/api/$1" },

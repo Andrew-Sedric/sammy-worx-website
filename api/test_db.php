@@ -48,6 +48,58 @@ if ($conn) {
                 echo "</tr>";
             }
             echo "</table>";
+
+            echo "<h2>3. Create Sessions Table</h2>";
+            $create_sql = "
+            CREATE TABLE IF NOT EXISTS sessions (
+                session_id VARCHAR(255) PRIMARY KEY,
+                user_id INT NOT NULL,
+                username VARCHAR(255) NOT NULL,
+                login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                ip_address VARCHAR(45),
+                user_agent TEXT,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            );
+            ";
+
+            if ($conn->query($create_sql) === TRUE) {
+                echo "<p style='color: green;'><b>✓ Sessions table created successfully!</b></p>";
+
+                // Create indexes
+                $index_sql = "
+                CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
+                CREATE INDEX IF NOT EXISTS idx_sessions_last_activity ON sessions(last_activity);
+                ";
+
+                if ($conn->multi_query($index_sql) === TRUE) {
+                    echo "<p style='color: green;'><b>✓ Indexes created successfully!</b></p>";
+                } else {
+                    echo "<p style='color: red;'>✗ Error creating indexes: " . $conn->error . "</p>";
+                }
+            } else {
+                echo "<p style='color: red;'>✗ Error creating sessions table: " . $conn->error . "</p>";
+            }
+
+            echo "<h2>4. Test Login Query</h2>";
+            $test_username = 'sammyworx';
+            $test_password = '0844sammy';
+
+            $stmt = $conn->prepare("SELECT id, username FROM users WHERE username = ? AND password = ? LIMIT 1");
+            $stmt->bind_param("ss", $test_username, $test_password);
+            $stmt->execute();
+            $login_result = $stmt->get_result();
+
+            if ($login_result->num_rows > 0) {
+                $user = $login_result->fetch_assoc();
+                echo "<p style='color: green;'><b>✓ Login test successful!</b></p>";
+                echo "User ID: " . $user['id'] . "<br>";
+                echo "Username: " . $user['username'] . "<br>";
+            } else {
+                echo "<p style='color: red;'><b>✗ Login test failed - no matching user found</b></p>";
+                echo "Tested with: username='$test_username', password='$test_password'<br>";
+            }
+            $stmt->close();
             echo "<p><b>Total users: " . $result->num_rows . "</b></p>";
         } else {
             echo "<p style='color: red;'>Failed to query users table: " . $conn->error . "</p>";

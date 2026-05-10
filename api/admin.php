@@ -9,6 +9,20 @@ if (IS_VERCEL && !file_exists('/tmp')) {
 session_start();
 
 // Check if logged in
+session_start();
+
+$user_data = null;
+if (IS_VERCEL && isset($sessionHandler)) {
+    // Use database session validation for Vercel
+    $session_id = session_id();
+    $user_data = $sessionHandler->validate_session($session_id);
+    if ($user_data) {
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['username'] = $user_data['username'];
+        $_SESSION['user_id'] = $user_data['user_id'];
+    }
+}
+
 if (empty($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     header("Location: /api/login.php", true, 302);
     exit();

@@ -8,6 +8,8 @@ if (IS_VERCEL && !file_exists('/tmp')) {
 
 session_start();
 
+session_start();
+
 // Destroy session
 $_SESSION = array();
 
@@ -23,6 +25,12 @@ if (ini_get("session.use_cookies")) {
         $params["secure"],
         $params["httponly"]
     );
+}
+
+// For Vercel database sessions, also delete from database
+if (IS_VERCEL && isset($sessionHandler)) {
+    $session_id = session_id();
+    $sessionHandler->destroy($session_id);
 }
 
 session_destroy();
