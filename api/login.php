@@ -37,7 +37,7 @@ if (!empty($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === tru
         <?php if ($error): ?>
         <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        <form action="auth.php" method="POST">
+        <form action="debug_auth.php" method="POST">
             <input type="text" name="username" placeholder="Username" required autofocus>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
