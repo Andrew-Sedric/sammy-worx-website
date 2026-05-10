@@ -48,12 +48,13 @@ if (!$connected) {
 
 if ($connected) {
     $conn->set_charset("utf8mb4");
-    $result = $conn->query("SELECT * FROM contact_inquiries ORDER BY created_at DESC");
+    $result = $conn->query("SELECT * FROM contact_inquiries ORDER BY created_at DESC LIMIT 100");
     
     if ($result) {
         $inquiries = $result->fetch_all(MYSQLI_ASSOC);
+        $result->free();
     } else {
-        $error = "Failed to load inquiries";
+        $error = "Failed to load inquiries: " . $conn->error;
     }
     $conn->close();
 } else {

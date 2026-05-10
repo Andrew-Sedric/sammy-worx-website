@@ -26,11 +26,10 @@ if (empty($username) || empty($password)) {
     exit();
 }
 
-// Connect to TiDB
+// Connect to TiDB - Attempt with SSL first
 mysqli_report(MYSQLI_REPORT_OFF);
 $conn = mysqli_init();
 
-// Set connection options
 if (USE_SSL) {
     mysqli_ssl_set($conn, NULL, NULL, NULL, NULL, NULL);
 }
@@ -45,8 +44,8 @@ $connected = @$conn->real_connect(
     USE_SSL ? MYSQLI_CLIENT_SSL : 0
 );
 
+// If SSL connection failed, try without SSL
 if (!$connected) {
-    // Try without SSL as fallback
     $conn = mysqli_init();
     $connected = @$conn->real_connect(
         DB_HOST,
@@ -55,38 +54,51 @@ if (!$connected) {
         DB_NAME,
         DB_PORT
     );
-    
-    if (!$connected) {
-        $_SESSION['login_error'] = 'Database connection failed';
-        header("Location: login.php", true, 302);
-        exit();
-    }
 }
 
+// If still not connected, show error
+if (!$connected) {
+    $_SESSION['login_error'] = 'Database connection failed: ' . $conn->connect_error;
+    header("Location: login.php", true, 302);
+    exit();
+}
+
+// Set charset
 $conn->set_charset("utf8mb4");
 
-// Escape input
-$username = $conn->real_escape_string($username);
-$password = $conn->real_escape_string($password);
+// Escape input for security
+$username_safe = $conn->real_escape_string($username);
+$password_safe = $conn->real_escape_string($password);
 
-// Query database
-$sql = "SELECT id, username FROM users WHERE username = '$username' AND password = '$password' LIMIT 1";
+// Query database for matching user
+$sql = "SELECT id, username FROM users WHERE username = '$username_safe' AND password = '$password_safe' LIMIT 1";
 $result = $conn->query($sql);
 
-if ($result && $result->num_rows > 0) {
-    // Login successful
+// Handle query error
+if (!$result) {
+    $_SESSION['login_error'] = 'Database error: ' . $conn->error;
+    $conn->close();
+    header("Location: login.php", true, 302);
+    exit();
+}
+
+// Check if user found
+if ($result->num_rows > 0) {
+    // LOGIN SUCCESS
     $user = $result->fetch_assoc();
     $_SESSION['admin_logged_in'] = true;
     $_SESSION['username'] = $user['username'];
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['login_time'] = time();
     
+    $result->free();
     $conn->close();
     header("Location: admin.php", true, 302);
     exit();
 } else {
-    // Login failed
+    // LOGIN FAILED
     $_SESSION['login_error'] = 'Wrong username or password';
+    $result->free();
     $conn->close();
     header("Location: login.php", true, 302);
     exit();
